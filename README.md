@@ -48,5 +48,5 @@ Since the code provided in their GitHub has been deprecated, we referred to the 
 
 [**Hist2ST**](https://github.com/biomed-AI/Hist2ST)
 > [**Spatial transcriptomics prediction from histology jointly through Transformer and graph neural networks**](https://doi.org/10.1093/bib/bbac297)
- by Zeng Y, Wei Z, Yu W, Yin R, Yuan Y, Li B, Tang Z, Lu Y, Yang Y.
+ by Zeng Y, Wei Z, Yu W, Yin R, Yuan Y, Li B, Tang Z, Lu Y, Yang Y.  
   <i>Brief Bioinform</i> (2022).
