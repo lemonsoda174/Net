@@ -32,6 +32,7 @@ For DeepPT:
 > [**Integrating spatial gene expression and breast tumour morphology via deep learning**](https://rdcu.be/b46sX)<br/>
   by Bryan He, Ludvig Bergenstråhle, Linnea Stenbeck, Abubakar Abid, Alma Andersson, Åke Borg, Jonas Maaskola, Joakim Lundeberg & James Zou.<br/>
   <i>Nature Biomedical Engineering</i> (2020).
+
 Since the code provided in their GitHub has been deprecated, we referred to the re-implemented versions from authors of HisToGene and Hist2ST to reproduce our own re-implemented version of ST-Net
 
 [**HisToGene**](https://github.com/maxpmx/HisToGene)
