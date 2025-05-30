@@ -1,11 +1,54 @@
-**Implementation of ST-related models**
+# ST-problem baselines
 
-Models implemented so far: HisToGene, ST-Net
+Here, we reimplemented a number of different models for a problem related to Spatial Transcriptomics (ST)
 
-**How to run**
+Models implemented so far: 
+* ST-Net
+* HisToGene
+* DeepPT
+Models not yet implemented:
+* Hist2ST
+* ...
+
+# How to install
 
 Download data: Run "git clone https://github.com/almaan/her2st.git" in the "data" folder to clone the HER2ST dataset locally
-To unzip files in ST-cnts, run "gunzip *.gz" with the current path in terminal as the ST-cnts folder
+To unzip files in ST-cnts, cd into "Net/data/her2st/data/ST-cnts/" and run "gunzip *.gz"
 
-Train: Run ST_train.py. 
-Test: Run ST_predict.py. Results printed are shown in metrics (printed in cmd line) and figures (imgs saved in the "figures" folder)
+Run "pip install -r requirements.txt" to download all the necessary Python libraries (with the versions we are using)
+Note: You may encounter installation issues. In such case, refer to the Guide for Installation or Compatibility issues (.txt file)
+
+# How to execute the code
+
+For ST-Net and HisToGene:
+Train: Run ST_train.py and choose the model you wish to use. The model will conduct training and save checkpoints once completed.
+Test: Run ST_predict.py and choose the model you wish to use. Results printed are shown in metrics (printed in cmd line) and figures (imgs saved in the "figures" folder)
+
+For DeepPT:
+(To be updated)
+
+# References
+[**ST-Net**](https://github.com/bryanhe/ST-Net)
+> [**Integrating spatial gene expression and breast tumour morphology via deep learning**](https://rdcu.be/b46sX)<br/>
+  by Bryan He, Ludvig Bergenstråhle, Linnea Stenbeck, Abubakar Abid, Alma Andersson, Åke Borg, Jonas Maaskola, Joakim Lundeberg & James Zou.<br/>
+  <i>Nature Biomedical Engineering</i> (2020).
+Since the code provided in their GitHub has been deprecated, we referred to the re-implemented versions from authors of HisToGene and Hist2ST to reproduce our own re-implemented version of ST-Net
+
+[**HisToGene**](https://github.com/maxpmx/HisToGene)
+> [Leveraging information in spatial transcriptomics to predict super-resolution gene expression from histology images in tumors](https://doi.org/10.1101/2021.11.28.470212)
+
+[**DeepPT**](https://zenodo.org/records/11125591)
+> [A deep-learning framework to predict cancer treatment response from histopathology images through imputed transcriptomics](https://www.nature.com/articles/s43018-024-00793-2)
+
+[**Hist2ST**](https://github.com/biomed-AI/Hist2ST)
+```
+
+@article{zengys,
+  title={Spatial Transcriptomics Prediction from Histology jointly through Transformer and Graph Neural Networks},
+  author={ Yuansong Zeng, Zhuoyi Wei, Weijiang Yu, Rui Yin,  Bingling Li, Zhonghui Tang, Yutong Lu, Yuedong Yang},
+  journal={biorxiv},
+  year={2021}
+ publisher={Cold Spring Harbor Laboratory}
+}
+
+```
