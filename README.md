@@ -1,4 +1,4 @@
-# ST-problem baselines
+### ST-problem baselines
 
 Here, we reimplemented a number of different models for a problem related to Spatial Transcriptomics (ST)
 
@@ -11,7 +11,7 @@ Models not yet implemented:
 * Hist2ST
 * ...
 
-# How to install
+# Installation guide
 
 * Download data: Run "git clone https://github.com/almaan/her2st.git" in the "data" folder to clone the HER2ST dataset  
 * To unzip files in ST-cnts, cd into "Net/data/her2st/data/ST-cnts/" and run "gunzip *.gz"  
@@ -19,7 +19,7 @@ Models not yet implemented:
 
 Note: You may encounter installation issues. In such case, refer to the Guide for Installation or Compatibility issues (.txt file)
 
-# How to execute the code
+# Usage
 
 For ST-Net and HisToGene:  
 1. Train: Run ST_train.py and choose the model you wish to use. The model will conduct training and save checkpoints once completed.  
