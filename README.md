@@ -53,5 +53,5 @@ Since the code provided in their GitHub has been deprecated, we referred to the 
 
 [**EGN**](https://github.com/Yan98/EGN)
 > [**Exemplar Guided Deep Neural Network for Spatial Transcriptomics Analysis of Gene Expression Prediction**](https://doi.org/10.48550/arXiv.2210.16721)  
- by Yan Yang, Md Zakir Hossain, Eric A Stone, Shafin Rahman
+ by Yan Yang, Md Zakir Hossain, Eric A Stone, Shafin Rahman.  
   <i>arxiv</i> (2022).
