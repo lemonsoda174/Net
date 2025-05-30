@@ -9,7 +9,7 @@ Models implemented so far:
   
 Models not yet implemented:
 * Hist2ST
-* ...
+* EGN
 
 # Installation guide
 
@@ -50,3 +50,8 @@ Since the code provided in their GitHub has been deprecated, we referred to the 
 > [**Spatial transcriptomics prediction from histology jointly through Transformer and graph neural networks**](https://doi.org/10.1093/bib/bbac297)  
  by Zeng Y, Wei Z, Yu W, Yin R, Yuan Y, Li B, Tang Z, Lu Y, Yang Y.  
   <i>Brief Bioinform</i> (2022).
+
+[**EGN**](https://github.com/Yan98/EGN)
+> [**Exemplar Guided Deep Neural Network for Spatial Transcriptomics Analysis of Gene Expression Prediction**](https://doi.org/10.48550/arXiv.2210.16721)  
+ by Yan Yang, Md Zakir Hossain, Eric A Stone, Shafin Rahman
+  <i>arxiv</i> (2022).
