@@ -1,6 +1,6 @@
-### ST-problem baselines
+# ST-problem baselines
 
-Here, we reimplemented a number of different models for a problem related to Spatial Transcriptomics (ST)
+Here, we reimplemented a number of different models for a task related to Spatial Transcriptomics (ST) - predicting gene expression from Whole Slide Images (WSIs)
 
 Models implemented so far: 
 * ST-Net
