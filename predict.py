@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader
 from utils import *
-from HisToGene_model import HisToGene
+from models.HisToGene_model import HisToGene
 import warnings
 from dataset import ViT_HER2ST
 from tqdm import tqdm

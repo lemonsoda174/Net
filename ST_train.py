@@ -1,7 +1,7 @@
 from torch.utils.data import DataLoader
 from dataset import ViT_HER2ST, HER2ST
-from HisToGene_model import HisToGene
-from STNet_model import STModel
+from models.HisToGene_model import HisToGene
+from models.STNet_model import STModel
 import pytorch_lightning as pl
 
 import os
@@ -18,7 +18,7 @@ if mode == "Histogene":
     model = HisToGene(n_layers=8, n_genes=785, learning_rate=1e-5)
     trainer = pl.Trainer(accelerator='gpu', max_epochs=100)
     trainer.fit(model, train_loader)
-    trainer.save_checkpoint("model/histogene_last_train_"+tag+'_'+str(fold)+".ckpt")
+    trainer.save_checkpoint("model_ckpts/histogene_last_train_"+tag+'_'+str(fold)+".ckpt")
 
 elif mode == "ST-Net":
     dataset = HER2ST(train=True, fold=fold)
@@ -26,6 +26,6 @@ elif mode == "ST-Net":
     model = STModel(n_genes=785, learning_rate=1e-5)
     trainer = pl.Trainer(accelerator='gpu', max_epochs=100)
     trainer.fit(model, train_loader)
-    trainer.save_checkpoint("model/stnet_last_train_"+tag+'_'+str(fold)+".ckpt")
+    trainer.save_checkpoint("model_ckpts/stnet_last_train_"+tag+'_'+str(fold)+".ckpt")
 else:
     print("error")

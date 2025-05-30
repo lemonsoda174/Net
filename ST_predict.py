@@ -2,8 +2,8 @@ import os
 import torch
 from torch.utils.data import DataLoader
 import pytorch_lightning as pl
-from HisToGene_model import HisToGene
-from STNet_model import STModel
+from models.HisToGene_model import HisToGene
+from models.STNet_model import STModel
 from utils import *
 from predict import model_predict, get_R, cluster
 from dataset import ViT_HER2ST, HER2ST
@@ -16,7 +16,7 @@ tag = '-htg_her2st_785_32_cv'
 
 mode = input("Choose model to predict [Histogene/ST-Net]: ")
 if mode == "Histogene":
-    model = HisToGene.load_from_checkpoint("model/histogene_last_train_"+tag+'_'+str(fold)+".ckpt",n_layers=8, n_genes=785, learning_rate=1e-5)
+    model = HisToGene.load_from_checkpoint("model_ckpts/histogene_last_train_"+tag+'_'+str(fold)+".ckpt",n_layers=8, n_genes=785, learning_rate=1e-5)
     device = torch.device("cuda")
     dataset = ViT_HER2ST(train=False,sr=False,fold=fold)
     test_loader = DataLoader(dataset, batch_size=1, num_workers=4)
@@ -44,7 +44,7 @@ if mode == "Histogene":
     sc.pl.spatial(adata_pred, img=None, color='FASN', spot_size=112, color_map='magma', save='histogene_FASN.png')
 
 elif mode == "ST-Net":
-    model = STModel.load_from_checkpoint("model/stnet_last_train_"+tag+'_'+str(fold)+".ckpt", n_genes=785, learning_rate=1e-5)
+    model = STModel.load_from_checkpoint("model_ckpts/stnet_last_train_"+tag+'_'+str(fold)+".ckpt", n_genes=785, learning_rate=1e-5)
     device = torch.device("cuda")
     dataset = HER2ST(train=False,fold=fold)
     test_loader = DataLoader(dataset, batch_size=1, num_workers=4)
