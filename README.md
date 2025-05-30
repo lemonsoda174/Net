@@ -13,17 +13,17 @@ Models not yet implemented:
 
 # How to install
 
-Download data: Run "git clone https://github.com/almaan/her2st.git" in the "data" folder to clone the HER2ST dataset  
-To unzip files in ST-cnts, cd into "Net/data/her2st/data/ST-cnts/" and run "gunzip *.gz"  
-Run "pip install -r requirements.txt" to download all the necessary Python libraries (with the versions we are using)
+* Download data: Run "git clone https://github.com/almaan/her2st.git" in the "data" folder to clone the HER2ST dataset  
+* To unzip files in ST-cnts, cd into "Net/data/her2st/data/ST-cnts/" and run "gunzip *.gz"  
+* Run "pip install -r requirements.txt" to download all the necessary Python libraries (with the versions we are using)
 
 Note: You may encounter installation issues. In such case, refer to the Guide for Installation or Compatibility issues (.txt file)
 
 # How to execute the code
 
 For ST-Net and HisToGene:  
-Train: Run ST_train.py and choose the model you wish to use. The model will conduct training and save checkpoints once completed.  
-Test: Run ST_predict.py and choose the model you wish to use. Results printed are shown in metrics (printed in cmd line) and figures (imgs saved in the "figures" folder)  
+1. Train: Run ST_train.py and choose the model you wish to use. The model will conduct training and save checkpoints once completed.  
+2. Test: Run ST_predict.py and choose the model you wish to use. Results printed are shown in metrics (printed in cmd line) and figures (imgs saved in the "figures" folder)  
 
 For DeepPT:
 (To be updated)
