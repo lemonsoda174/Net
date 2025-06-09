@@ -125,6 +125,28 @@ def main():
 
         # quit()
 
+#from hist2st
+def test(model,test,device='cuda'):
+    model=model.to(device)
+    model.eval()
+    preds=None
+    ct=None
+    gt=None
+    loss=0
+    with torch.no_grad():
+        for patch, position, exp, adj, *_, center in tqdm(test):
+            patch, position, adj = patch.to(device), position.to(device), adj.to(device).squeeze(0)
+            pred = model(patch, position, adj)[0]
+            preds = pred.squeeze().cpu().numpy()
+            ct = center.squeeze().cpu().numpy()
+            gt = exp.squeeze().cpu().numpy()
+    adata = ad.AnnData(preds)
+    adata.obsm['spatial'] = ct
+    adata_gt = ad.AnnData(gt)
+    adata_gt.obsm['spatial'] = ct
+    return adata,adata_gt
+
+
 if __name__ == '__main__':
     main()
 
