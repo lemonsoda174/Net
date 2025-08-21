@@ -7,6 +7,7 @@ import torchvision
 import pytorch_lightning as pl
 from torchmetrics.functional import accuracy
 from torch.optim.lr_scheduler import ReduceLROnPlateau
+import gc
 
 
 # adaptation of ST-Net
@@ -86,7 +87,7 @@ class ImageClassifier(pl.LightningModule):
 
 
 class STModel(pl.LightningModule):
-    def __init__(self, feature_model=None, n_genes=1000, hidden_dim=2048, learning_rate=1e-5, use_mask=False, use_pos=False, cls=False):
+    def __init__(self, feature_model=None, n_genes=1000, hidden_dim=2048, learning_rate=1e-5, use_mask=False, use_pos=False, cls=False,patch_level = False):
         super().__init__()
         self.save_hyperparameters()
         # self.feature_model = None
@@ -102,11 +103,20 @@ class STModel(pl.LightningModule):
         
         self.learning_rate = learning_rate
         self.n_genes = n_genes
+        self.patch_level = patch_level
 
     def forward(self, patch, center):
-        feature = self.feature_extractor(patch).flatten(1)
-        h = feature
-        pred = self.pred_head(F.relu(h))
+        if self.patch_level:
+            feature = self.feature_extractor(patch).flatten(1)
+            h = feature
+            pred = self.pred_head(F.relu(h))
+        else:
+            preds = []
+            for i in range(len(patch)):
+                feature = self.feature_extractor(patch[i]).flatten(1)
+                h = feature
+                preds.append(self.pred_head(F.relu(h)))
+            pred = torch.cat(preds, dim=0)  # shape: [batch_size, output_dim]
         return pred
 
     def training_step(self, batch, batch_idx):

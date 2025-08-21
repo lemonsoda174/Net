@@ -1,0 +1,16 @@
+torch==2.6.0
+torchvision==0.21.0
+torchmetrics==1.7.2
+torchaudio==2.6.0
+pytorch_lightning==2.5.1
+einops==0.8.1
+matplotlib==3.10.1
+seaborn==0.13.2
+scanpy==1.11.0
+scprep==1.2.3
+numpy==1.26.4
+easydl
+timm
+memory_profiler
+
+# pandas==2.2.3

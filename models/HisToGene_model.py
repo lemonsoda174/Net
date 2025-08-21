@@ -87,24 +87,37 @@ class ViT(nn.Module):
     
 # adaptation of histogene
 class HisToGene(pl.LightningModule):
-    def __init__(self, patch_size=112, n_layers=4, n_genes=1000, dim=1024, learning_rate=1e-4, dropout=0.1, n_pos=64):
+    def __init__(self, patch_size=112, n_layers=4, n_genes=1000, dim=1024, learning_rate=1e-4, dropout=0.1, n_pos=64, patch_level = False):
         super().__init__()
         self.learning_rate = learning_rate
-        patch_dim = 3*patch_size*patch_size
-        self.patch_embedding = nn.Linear(patch_dim, dim)
-        self.x_embed = nn.Embedding(n_pos,dim)
-        self.y_embed = nn.Embedding(n_pos,dim)
-        self.vit = ViT(dim=dim, depth=n_layers, heads=16, mlp_dim=2*dim, dropout = dropout, emb_dropout = dropout)
+        self.patch_dim = 3*patch_size*patch_size
+        self.dim = dim
+        self.patch_embedding = nn.Linear(self.patch_dim, self.dim)
+        self.x_embed = nn.Embedding(n_pos,self.dim)
+        self.y_embed = nn.Embedding(n_pos,self.dim)
+        self.vit = ViT(dim=self.dim, depth=n_layers, heads=16, mlp_dim=2*dim, dropout = dropout, emb_dropout = dropout)
 
         self.gene_head = nn.Sequential(
             nn.LayerNorm(dim),
             nn.Linear(dim, n_genes)
         )
+        self.patch_level = patch_level
 
     def forward(self, patches, centers):
+        # if self.patch_level:
+        #     patches = patches.view(1, self.patch_dim)
+        #     patches = self.patch_embedding(patches)
+        #     centers_x = self.x_embed(centers[:,0].long()).view(1,1, self.dim)
+        #     centers_y = self.y_embed(centers[:,1].long()).view(1,1, self.dim)
+        #     # print(patches.shape, centers_x.shape, centers_y.shape, sep = "\n")
+        # else:
+        # patches = patches.view(patches.size(0), -1)
         patches = self.patch_embedding(patches)
         centers_x = self.x_embed(centers[:,:,0])
         centers_y = self.y_embed(centers[:,:,1])
+        # print(patches.shape, centers_x.shape, centers_y.shape, sep = "\n")
+
+
         x = patches + centers_x + centers_y
         h = self.vit(x)
         x = self.gene_head(h)

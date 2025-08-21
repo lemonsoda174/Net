@@ -91,13 +91,13 @@ class Hist2ST(pl.LightningModule):
     def __init__(self, learning_rate=1e-5, fig_size=112, label=None, 
                  dropout=0.2, n_pos=64, kernel_size=5, patch_size=7, n_genes=785, 
                  depth1=2, depth2=8, depth3=4, heads=16, channel=32, 
-                 zinb=0, nb=False, bake=0, lamb=0, policy='mean', 
+                 zinb=0, nb=False, bake=0, lamb=0, policy='mean', patch_level = False
                 ):
         super().__init__()
         # self.save_hyperparameters()
         dim=(fig_size//patch_size)**2*channel//8
         self.learning_rate = learning_rate
-        
+        self.patch_level = patch_level
         self.nb=nb
         self.zinb=zinb
         
@@ -140,11 +140,20 @@ class Hist2ST(pl.LightningModule):
             tf.RandomHorizontalFlip(0.2),
         ])
     def forward(self, patches, centers, adj, aug=False):
-        B,N,C,H,W=patches.shape
-        patches=patches.reshape(B*N,C,H,W)
-        patches = self.patch_embedding(patches)
-        centers_x = self.x_embed(centers[:,:,0])
-        centers_y = self.y_embed(centers[:,:,1])
+        if not self.patch_level:
+            B,N,C,H,W=patches.shape
+            patches=patches.reshape(B*N,C,H,W)
+            patches = self.patch_embedding(patches)
+            centers_x = self.x_embed(centers[:,:,0])
+            centers_y = self.y_embed(centers[:,:,1])
+        else:
+            N,C,H,W=patches.shape
+            patches = patches.view(1, C, H, W)
+            patches = self.patch_embedding(patches)
+            centers_x = self.x_embed(centers[:,0].long()).view(1,1, 1024)
+            centers_y = self.y_embed(centers[:,1].long()).view(1,1, 1024)
+        print(patches.shape, centers_x.shape, centers_y.shape, sep = '\n')
+        print()
         ct=centers_x + centers_y
         h = self.vit(patches,ct,adj)
         x = self.gene_head(h)

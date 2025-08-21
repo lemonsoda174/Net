@@ -12,33 +12,40 @@ from sklearn.metrics import adjusted_rand_score as ari_score
 MODEL_PATH = ''
 
 
-def model_predict(model, test_loader, adata=None, attention=True, device = torch.device('cpu')): 
+def model_predict(model, test_loader, model_type=None, adata=None, attention=True, patch_level = True, device = torch.device('cpu')): 
     model.eval()
     model = model.to(device)
     preds = None
     count = 0
+    print('prediction starts')
+
     with torch.no_grad():
         for patch, position, exp, center in tqdm(test_loader):
 
             patch, position = patch.to(device), position.to(device)
             
             pred = model(patch, position)
-
+            print(pred.shape, center.shape, exp.shape, sep = '\n')
+            print("end")
             if preds is None:
                 preds = pred #previously preds = pred.squeeze(); remove for compatibility w stnet
                 ct = center
                 gt = exp
             else:
                 preds = torch.cat((preds,pred),dim=0)
-                ct = torch.cat((ct,center),dim=0)
-                gt = torch.cat((gt,exp),dim=0)
 
+                #dim = 0 for stnet, dim = 1 for histogene
+                ct = torch.cat((ct,center),dim=1)
+                gt = torch.cat((gt,exp),dim=1)
 
-
+    
     preds = preds.cpu().squeeze().numpy()
     ct = ct.cpu().squeeze().numpy()
     gt = gt.cpu().squeeze().numpy()
     adata = ann.AnnData(preds)
+    print("ct, adata:")
+    print(ct.shape)  # will show (6962,)
+    print(adata.shape)  # will show (3481, n_genes)
     adata.obsm['spatial'] = ct
 
     adata_gt = ann.AnnData(gt)
@@ -62,6 +69,31 @@ def get_R(data1,data2,dim=1,func=pearsonr):
     p1=np.array(p1)
     return r1,p1
 
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+
+def get_MSE(data1, data2, dim=1):
+    adata1 = data1.X
+    adata2 = data2.X
+    mse_list = []
+    for g in range(data1.shape[dim]):
+        if dim == 1:
+            mse = mean_squared_error(adata1[:, g], adata2[:, g])
+        elif dim == 0:
+            mse = mean_squared_error(adata1[g, :], adata2[g, :])
+        mse_list.append(mse)
+    return np.array(mse_list)
+
+def get_MAE(data1, data2, dim=1):
+    adata1 = data1.X
+    adata2 = data2.X
+    mae_list = []
+    for g in range(data1.shape[dim]):
+        if dim == 1:
+            mae = mean_absolute_error(adata1[:, g], adata2[:, g])
+        elif dim == 0:
+            mae = mean_absolute_error(adata1[g, :], adata2[g, :])
+        mae_list.append(mae)
+    return np.array(mae_list)
 
 def cluster(adata,label):
     idx=label!='undetermined'
@@ -137,9 +169,22 @@ def test(model,test,device='cuda'):
         for patch, position, exp, adj, *_, center in tqdm(test):
             patch, position, adj = patch.to(device), position.to(device), adj.to(device).squeeze(0)
             pred = model(patch, position, adj)[0]
-            preds = pred.squeeze().cpu().numpy()
-            ct = center.squeeze().cpu().numpy()
-            gt = exp.squeeze().cpu().numpy()
+            if preds is None:
+                preds = pred #previously preds = pred.squeeze(); remove for compatibility w stnet
+                ct = center
+                gt = exp
+            else:
+                preds = torch.cat((preds,pred),dim=0)
+
+                #dim = 0 for stnet, dim = 1 for histogene
+                ct = torch.cat((ct,center),dim=1)
+                gt = torch.cat((gt,exp),dim=1)
+
+    
+    preds = preds.cpu().squeeze().numpy()
+    ct = ct.cpu().squeeze().numpy()
+    gt = gt.cpu().squeeze().numpy()
+
     adata = ad.AnnData(preds)
     adata.obsm['spatial'] = ct
     adata_gt = ad.AnnData(gt)
